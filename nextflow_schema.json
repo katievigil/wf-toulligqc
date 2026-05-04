@@ -1,218 +1,50 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/./master/nextflow_schema.json",
-    "title": "genomiqueens/wf-toulligqc",
-    "description": "Nextflow workflow template repository.",
-    "demo_url": "https://github.com/GenomiqueENS/wf-toulligqc/raw/main/demo_data/wf-toulligqc-demo.tar.gz",
-    "aws_demo_url": "https://github.com/GenomiqueENS/wf-toulligqc/raw/main/demo_data/demo.nextflow.config",
-    "url": "https://github.com/GenomiqueENS/wf-toulligqc",
-    "type": "object",
-    "definitions": {
-        "input": {
-            "title": "Input Options",
-            "type": "object",
-            "fa_icon": "fas fa-arrow-right",
-            "description": "Parameters for finding and handling input data for analysis.",
-            "properties": {
-                "input_files": {
-                    "type": "string",
-                    "description": "Note that fastq/ bam only QC will result in some missing data and will significantly increase the running time",
-                    "enum": [
-                        "sequencing_summary only",
-                        "sequencing_summary + telemetry_source",
-                        "telemetry_source + fast5",
-                        "fastq/ bam only"
-                    ],
-                    "default":  "sequencing_summary only"
-                }
-            },
-            "required": [
-                "input_files"
-            ]
-        },
-        "samples": {
-            "title": "Sample Options",
-            "type": "object",
-            "fa_icon": "fas fa-vials",
-            "description": "Parameters that relate to input files for QC.",
-            "properties": {
-                "sequencing_summary_source": {
-                    "type": "string",
-                    "format": "file-path",
-                    "description": "Basecaller sequencing summary source, can be compressed with gzip (.gz) or bzip2 (.bz2)",
-                    "help_text": "",
-                    "demo_data": "demo_data/sequencing_summary.txt"
-                },
-                "telemetry_source": {
-                    "type": "string",
-                    "format": "file-path",
-                    "description": "Basecaller telemetry file source, can be compressed with gzip (.gz) or bzip2 (.bz2)",
-                    "help_text": "",
-                    "demo_data": "demo_data/sequencing_telemetry.js"
-                },
-                "fast5_source": {
-                    "type": "string",
-                    "format": "file-path",
-                    "description": "Fast5 file source",
-                    "help_text": "Necessary if no telemetry file"
-                },
-                "fastq_source": {
-                    "type": "string",
-                    "format": "file-path",
-                    "description": "FASTQ file source",
-                    "help_text": "Necessary if no sequencing summary file"
-                },
-                "bam_source": {
-                    "type": "string",
-                    "format": "file-path",
-                    "description": "BAM file source",
-                    "help_text": "Necessary if no sequencing summary file"
-                }
-            },
-            "anyOf": [
-                {
-                    "required": [
-                        "sequencing_summary_source"
-                    ]
-                },
-                {
-                    "required": [
-                        "telemetry_source"
-                    ]
-                },
-                {
-                    "required": [
-                        "fast5_source"
-                    ]
-                },
-                {
-                    "required": [
-                        "fastq_source"
-                    ]
-                },
-                {
-                    "required": [
-                        "bam_source"
-                    ]
-                }
-            ]
-        },
-        "barcoding": {
-            "title": "Barcoding Options",
-            "type": "object",
-            "fa_icon": "fas fa-arrow-left",
-            "description": "Parameters for barcoded samples ",
-            "properties": {
-                "barcoding": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Option for barcode usage."
-                },
-                "barcodes": {
-                    "type": "string",
-                    "description": "Coma separated barcode list (e.g. BC05,RB09,NB01,barcode10)"
-                },
-                "barcoding_summary_pass": {
-                    "type": "string",
-                    "format": "file-path",
-                    "description": "Basecaller barcoding summary source of passed reads, can be compressed with gzip (.gz) or bzip2 (.bz2).",
-                    "help_text": ""
-                },
-                "barcoding_summary_fail": {
-                    "type": "string",
-                    "format": "file-path",
-                    "description": "Basecaller barcoding summary source of failed reads, can be compressed with gzip (.gz) or bzip2 (.bz2)",
-                    "help_text": ""
-                }
-            }
-        },
-        "output": {
-            "title": "Output Options",
-            "type": "object",
-            "fa_icon": "fas fa-arrow-left",
-            "description": "Parameters for saving and naming workflow outputs.",
-            "properties": {
-                "out_dir": {
-                    "type": "string",
-                    "default": "output",
-                    "format": "directory-path",
-                    "description": "Directory for output of all workflow results."
-                }
-            }
-        },
-        "advanced_options": {
-            "title": "Advanced Options",
-            "type": "object",
-            "description": "Advanced options for configuring processes inside the workflow.",
-            "help_text": "These advanced options do not need to be changed for typical use, but allow fine tuning of workflows for users who want more control over the workflow.",
-            "properties": {
-                "report_name": {
-                    "type": "string",
-                    "description": "report_name.",
-                    "help_text": "."
-                },
-                "disable_ping": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Enable to prevent sending a workflow ping."
-                },
-                "help": {
-                    "type": "boolean",
-                    "description": "Display help text.",
-                    "fa_icon": "fas fa-question-circle",
-                    "hidden": true
-                },
-                "version": {
-                    "type": "boolean",
-                    "description": "Display version and exit.",
-                    "fa_icon": "fas fa-question-circle",
-                    "hidden": true
-                }
-            }
-        }
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://raw.githubusercontent.com/katievigil/wf-toulligqc/main/nextflow_schema.json",
+  "title": "katievigil/wf-toulligqc",
+  "description": "Quality control workflow for Oxford Nanopore sequencing data using ToulligQC",
+  "type": "object",
+
+  "properties": {
+
+    "input_files": {
+      "type": "string",
+      "enum": [
+        "sequencing_summary only",
+        "sequencing_summary + telemetry_source",
+        "telemetry_source + fast5",
+        "fastq/ bam only"
+      ],
+      "default": "sequencing_summary only"
     },
-    "allOf": [
-        {
-            "$ref": "#/definitions/input"
-        },
-        {
-            "$ref": "#/definitions/samples"
-        },
-        {
-            "$ref": "#/definitions/output"
-        },
-        {
-            "$ref": "#/definitions/advanced_options"
-        }
-    ],
-    "properties": {
-        "process_label": {
-            "type": "string",
-            "description": "The main process label for template processes to use by default",
-            "hidden": true,
-            "default": "wf-template"
-        },
-        "aws_image_prefix": {
-            "type": "string",
-            "hidden": true
-        },
-        "aws_queue": {
-            "type": "string",
-            "hidden": true
-        },
-        "monochrome_logs": {
-            "type": "boolean"
-        },
-        "validate_params": {
-            "type": "boolean",
-            "default": true
-        },
-        "show_hidden_params": {
-            "type": "boolean"
-        }
+
+    "sequencing_summary_source": { "type": "string", "format": "file-path" },
+    "telemetry_source": { "type": "string", "format": "file-path" },
+    "fast5_source": { "type": "string", "format": "file-path" },
+    "fastq_source": { "type": "string", "format": "file-path" },
+    "bam_source": { "type": "string", "format": "file-path" },
+
+    "barcoding": { "type": "boolean", "default": false },
+    "barcodes": { "type": "string" },
+
+    "barcoding_summary_pass": { "type": "string", "format": "file-path" },
+    "barcoding_summary_fail": { "type": "string", "format": "file-path" },
+
+    "out_dir": {
+      "type": "string",
+      "default": "output",
+      "format": "directory-path"
     },
-    "docs": {
-        "intro": "## Introduction\n\nThis section of documentation typically contains an overview of the workflow in terms of motivation\nand bioinformatics methods, listing any key tools or algorithms employed, whilst also describing its\nrange of use-cases and what a suitable input dataset should look like.\n\n",
-        "links": "## Useful links\n\n* [nextflow](https://www.nextflow.io/)\n* [docker](https://www.docker.com/products/docker-desktop)\n* [singularity](https://docs.sylabs.io/guides/latest/user-guide/)\n"
-    }
+
+    "report_name": { "type": "string" },
+    "disable_ping": { "type": "boolean", "default": false }
+  },
+
+  "anyOf": [
+    { "required": ["sequencing_summary_source"] },
+    { "required": ["telemetry_source"] },
+    { "required": ["fast5_source"] },
+    { "required": ["fastq_source"] },
+    { "required": ["bam_source"] }
+  ]
 }
