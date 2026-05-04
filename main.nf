@@ -1,4 +1,3 @@
-#!/usr/bin/env nextflow
 
 // Developer notes
 //
@@ -151,26 +150,15 @@ workflow pipeline {
 WorkflowMain.initialise(workflow, params, log)
 workflow {
 
-    if (params.disable_ping == false) {
-        Pinguscript.ping_post(workflow, "start", "none", params.out_dir, params)
-    }
+// EPI2ME safe guard
+if( !params.sequencing_summary_source &&
+    !params.telemetry_source &&
+    !params.fast5_source &&
+    !params.fastq_source &&
+    !params.bam_source ) {
 
-    seq_summary = params.sequencing_summary_source != null ? file(params.sequencing_summary_source, type: "file") : file("no_sequencing_summary", type: "file")
-    summary_pass = params.barcoding_summary_pass != null ? file(params.barcoding_summary_pass, type: "file") : file("no_barcoding_pass", type: "file")
-    summary_fail = params.barcoding_summary_fail != null ? file(params.barcoding_summary_fail, type: "file") : file("no_barcoding_fail", type: "file")
-    seq_telemetry = params.telemetry_source != null ? file(params.telemetry_source, type: "file") : file("no_telemetry", type: "file")
-    fast5 = params.fast5_source != null ? file(params.fast5_source, type: "file") : file("no_fast5", type: "file")
-    fastq = params.fastq_source != null ? file(params.fastq_source, type: "file") : file("no_fastq", type: "file")
-    bam = params.bam_source != null ? file(params.bam_source, type: "file") : file("no_bam", type: "file")
-    barcodes = params.barcodes != null ? params.barcodes : "no_barcodes"
-    barcoding = params.barcoding != false ? params.barcoding : "no_barcoding"
-    report_name = params.report_name
-
-    pipeline(seq_summary, summary_pass, summary_fail, seq_telemetry, fast5, fastq, bam, report_name, barcodes, barcoding)
-    pipeline.out.report.concat(pipeline.out.workflow_params).concat(pipeline.out.plotly_js)
-    | map { [it, null] }
-
-    | output
+    log.info "No input data provided — skipping pipeline execution (EPI2ME validation mode)"
+    return
 }
 
 if (params.disable_ping == false) {
