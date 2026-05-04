@@ -1,50 +1,75 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "$id": "https://raw.githubusercontent.com/katievigil/wf-toulligqc/main/nextflow_schema.json",
-  "title": "katievigil/wf-toulligqc",
+  "title": "ToulligQC Workflow",
   "description": "Quality control workflow for Oxford Nanopore sequencing data using ToulligQC",
   "type": "object",
 
   "properties": {
 
-    "input_files": {
+    "sequencing_summary_source": {
       "type": "string",
-      "enum": [
-        "sequencing_summary only",
-        "sequencing_summary + telemetry_source",
-        "telemetry_source + fast5",
-        "fastq/ bam only"
-      ],
-      "default": "sequencing_summary only"
+      "format": "file-path",
+      "title": "Sequencing summary file",
+      "description": "Path to sequencing_summary.txt file"
     },
 
-    "sequencing_summary_source": { "type": "string", "format": "file-path" },
-    "telemetry_source": { "type": "string", "format": "file-path" },
-    "fast5_source": { "type": "string", "format": "file-path" },
-    "fastq_source": { "type": "string", "format": "file-path" },
-    "bam_source": { "type": "string", "format": "file-path" },
+    "telemetry_source": {
+      "type": "string",
+      "format": "file-path",
+      "title": "Telemetry file",
+      "description": "Path to telemetry JSON file"
+    },
 
-    "barcoding": { "type": "boolean", "default": false },
-    "barcodes": { "type": "string" },
+    "fast5_source": {
+      "type": "string",
+      "format": "file-path",
+      "title": "FAST5 directory",
+      "description": "Directory containing FAST5 files"
+    },
 
-    "barcoding_summary_pass": { "type": "string", "format": "file-path" },
-    "barcoding_summary_fail": { "type": "string", "format": "file-path" },
+    "fastq_source": {
+      "type": "string",
+      "format": "file-path",
+      "title": "FASTQ file",
+      "description": "Input FASTQ file"
+    },
+
+    "bam_source": {
+      "type": "string",
+      "format": "file-path",
+      "title": "BAM file",
+      "description": "Input BAM file"
+    },
+
+    "barcoding": {
+      "type": "boolean",
+      "default": false,
+      "title": "Enable barcoding",
+      "description": "Enable barcode analysis"
+    },
+
+    "barcodes": {
+      "type": "string",
+      "title": "Barcodes",
+      "description": "Comma-separated list of barcodes"
+    },
 
     "out_dir": {
       "type": "string",
       "default": "output",
-      "format": "directory-path"
+      "format": "directory-path",
+      "title": "Output directory",
+      "description": "Directory where results will be written"
     },
 
-    "report_name": { "type": "string" },
-    "disable_ping": { "type": "boolean", "default": false }
+    "report_name": {
+      "type": "string",
+      "default": "ToulligQC_report",
+      "title": "Report name",
+      "description": "Name of the output report"
+    }
   },
 
-  "anyOf": [
-    { "required": ["sequencing_summary_source"] },
-    { "required": ["telemetry_source"] },
-    { "required": ["fast5_source"] },
-    { "required": ["fastq_source"] },
-    { "required": ["bam_source"] }
-  ]
+  "required": ["sequencing_summary_source"]
 }
