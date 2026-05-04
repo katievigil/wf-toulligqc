@@ -1,75 +1,39 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "https://raw.githubusercontent.com/katievigil/wf-toulligqc/main/nextflow_schema.json",
-  "title": "ToulligQC Workflow",
-  "description": "Quality control workflow for Oxford Nanopore sequencing data using ToulligQC",
+  "title": "wf-toulligqc",
+  "description": "ToulligQC workflow",
   "type": "object",
 
   "properties": {
-
     "sequencing_summary_source": {
       "type": "string",
-      "format": "file-path",
-      "title": "Sequencing summary file",
-      "description": "Path to sequencing_summary.txt file"
+      "title": "Sequencing summary file"
     },
-
     "telemetry_source": {
       "type": "string",
-      "format": "file-path",
-      "title": "Telemetry file",
-      "description": "Path to telemetry JSON file"
+      "title": "Telemetry file"
     },
-
     "fast5_source": {
       "type": "string",
-      "format": "file-path",
-      "title": "FAST5 directory",
-      "description": "Directory containing FAST5 files"
+      "title": "FAST5 directory"
     },
-
     "fastq_source": {
       "type": "string",
-      "format": "file-path",
-      "title": "FASTQ file",
-      "description": "Input FASTQ file"
+      "title": "FASTQ file"
     },
-
     "bam_source": {
       "type": "string",
-      "format": "file-path",
-      "title": "BAM file",
-      "description": "Input BAM file"
+      "title": "BAM file"
     },
-
-    "barcoding": {
-      "type": "boolean",
-      "default": false,
-      "title": "Enable barcoding",
-      "description": "Enable barcode analysis"
-    },
-
-    "barcodes": {
-      "type": "string",
-      "title": "Barcodes",
-      "description": "Comma-separated list of barcodes"
-    },
-
     "out_dir": {
       "type": "string",
       "default": "output",
-      "format": "directory-path",
-      "title": "Output directory",
-      "description": "Directory where results will be written"
+      "title": "Output directory"
     },
-
     "report_name": {
       "type": "string",
       "default": "ToulligQC_report",
-      "title": "Report name",
-      "description": "Name of the output report"
+      "title": "Report name"
     }
-  },
-
-  "required": ["sequencing_summary_source"]
+  }
 }
