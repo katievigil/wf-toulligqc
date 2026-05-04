@@ -147,27 +147,41 @@ workflow pipeline {
 }
 
 // entrypoint workflow
-WorkflowMain.initialise(workflow, params, log)
 workflow {
 
-// EPI2ME safe guard
-if( !params.sequencing_summary_source &&
-    !params.telemetry_source &&
-    !params.fast5_source &&
-    !params.fastq_source &&
-    !params.bam_source ) {
+    // EPI2ME safe guard
+    if( !params.sequencing_summary_source &&
+        !params.telemetry_source &&
+        !params.fast5_source &&
+        !params.fastq_source &&
+        !params.bam_source ) {
 
-    log.info "No input data provided — skipping pipeline execution (EPI2ME validation mode)"
-    return
-}
-
-if (params.disable_ping == false) {
-    workflow.onComplete {
-        Pinguscript.ping_post(workflow, "end", "none", params.out_dir, params)
+        log.info "No input data provided — skipping pipeline execution (EPI2ME validation mode)"
+        return
     }
 
-    workflow.onError {
-        Pinguscript.ping_post(workflow, "error", "$workflow.errorMessage", params.out_dir, params)
-    }
-}
+    seq_summary = params.sequencing_summary_source ? file(params.sequencing_summary_source) : file("no_seq_summary")
+    summary_pass = params.barcoding_summary_pass ? file(params.barcoding_summary_pass) : file("no_barcoding_pass")
+    summary_fail = params.barcoding_summary_fail ? file(params.barcoding_summary_fail) : file("no_barcoding_fail")
+    seq_telemetry = params.telemetry_source ? file(params.telemetry_source) : file("no_telemetry")
+    fast5 = params.fast5_source ? file(params.fast5_source) : file("no_fast5")
+    fastq = params.fastq_source ? file(params.fastq_source) : file("no_fastq")
+    bam = params.bam_source ? file(params.bam_source) : file("no_bam")
 
+    barcodes = params.barcodes ?: "no_barcodes"
+    barcoding = params.barcoding ?: "no_barcoding"
+    report_name = params.report_name ?: "ToulligQC_report"
+
+    pipeline(
+        seq_summary,
+        summary_pass,
+        summary_fail,
+        seq_telemetry,
+        fast5,
+        bam,
+        fastq,
+        report_name,
+        barcodes,
+        barcoding
+    )
+}
